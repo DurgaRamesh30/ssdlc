@@ -26,20 +26,14 @@ jobs:
         with:
           python-version: '3.12'
 
-    # SonarQube Scan
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          extra-properties: |
-            sonar.projectKey=DurgaRamesh30_ssdlc
-            sonar.organization=DurgaRamesh30
-            sonar.sources=src
-            sonar.python.coverage.reportPaths=coverage.xml
-            sonar.coverage.exclusions=**/*test*.py
-            sonar.cpd.exclusions=**/*test*.py
-            sonar.verbose=true
+      # Install dependencies and run tests with coverage
+      - name: Install dependencies and Run Unit Tests with Coverage
+        run: |
+          pip install flask pytest pytest-cov
+          python -m pytest src/test_secure_example.py --cov=src --cov-report=xml:coverage.xml -v
+
+     
+
 
       # Build Docker Image (no push)
       - name: Build Docker Image
